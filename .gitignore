@@ -1,4 +1,7 @@
 vendor/
-.idea/
+.idea/*
+.idea/workspace.xml
 composer.lock
 test.db
+
+.idea/workspace.xml
