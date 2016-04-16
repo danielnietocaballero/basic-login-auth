@@ -1,0 +1,24 @@
+**First of all, you have to run in console (from project root folder):**
+*php db_up.php*
+
+It will create in memory a database and a table Users with some pre-filled data. In example:
+
+|username    |   password    |   roles|
+|----------- |-----------|----------|
+|'userone'   |   'userone'   |   'PAGE_1'|
+|'usertwo'   |   'usertwo'   |   'PAGE_2'|
+|'userthree' |   'userthree' |   'PAGE_3'|
+|'god'       |   'god'       |   'ADMIN'|
+|'multirol'  |   'multirol'  |   'PAGE_1\|PAGE_2'|
+
+
+Then, you have tu run a PHP instance with the built-in server:
+*php -S localhost:8000*
+
+It will launch a php server. Then, you could go to the browser, and go to http://localhost:8000/
+
+A login form will be shown.
+
+The ADMIN user, will be redirected to PAGE_1
+
+**For running tests:**
