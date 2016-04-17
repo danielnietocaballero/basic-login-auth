@@ -18,10 +18,10 @@ if (!$db) {
 
 $sql = <<<EOF
       CREATE TABLE Users
-      (id 		INT PRIMARY KEY     NOT NULL,
-      username        TEXT    NOT NULL,
-      password    TEXT    NOT NULL,
-      roles       TEXT    NOT NULL
+      (id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT NOT NULL,
+      password TEXT NOT NULL,
+      roles TEXT NOT NULL
       );
 EOF;
 

@@ -47,6 +47,39 @@ class User extends Repository
 	}
 
 	/**
+	 * @param int|string $id
+	 * @return UserModel|null
+	 */
+	public function getById($id)
+	{
+		$result = $this->select(array(
+			'id' => $id
+		));
+
+		return !$result ? null : $this->recreate($result);
+	}
+
+	public function save($id = null, $userame, $password, $roles)
+	{
+		if (null === $id) {
+			$this->insert(array(
+				'username' => $userame,
+				'password' => $password,
+				'roles' => $roles,
+			));
+		} else {
+			$this->update(
+				$id,
+				array(
+					'username' => $userame,
+					'password' => $password,
+					'roles' => $roles,
+				)
+			);
+		}
+	}
+
+	/**
 	 * @param array $data
 	 * @return UserModel|null
 	 */
@@ -56,10 +89,11 @@ class User extends Repository
 			return null;
 		}
 
+		$id = $data['id'];
 		$username = $data['username'];
 		$password = $data['password'];
 		$roles = $data['roles'];
-		$user = new UserModel($username, $password, explode('|', $roles));
+		$user = new UserModel($id, $username, $password, explode('|', $roles));
 
 		return $user;
 	}

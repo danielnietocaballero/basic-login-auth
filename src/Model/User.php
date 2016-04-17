@@ -11,6 +11,9 @@ class User
 	CONST ROLE_PAGE_2 = 'PAGE_2';
 	CONST ROLE_PAGE_3 = 'PAGE_3';
 
+	/** @var int */
+	protected $id;
+
 	/** @var string $username */
 	protected $username;
 
@@ -20,9 +23,10 @@ class User
 	/** @var string $password */
 	private $password;
 
-	public function __construct($username, $password, $roles = array())
+	public function __construct($id = null, $username, $password, $roles = array())
 	{
-		$this->setUsername($username)
+		$this->setId($id)
+			->setUsername($username)
 			->setPassword($password)
 			->setRoles($roles);
 	}
@@ -33,6 +37,36 @@ class User
 	public function __toString()
 	{
 		return $this->username;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function toArray()
+	{
+		return array(
+			'id' => $this->getId(),
+			'username' => $this->getUsername(),
+			'roles' => $this->getRolesString(),
+		);
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @param $id
+	 * @return $this
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
+		return $this;
 	}
 
 	/**
@@ -62,6 +96,14 @@ class User
 	}
 
 	/**
+	 * @return array
+	 */
+	public function getRolesString()
+	{
+		return implode('|', $this->getRoles());
+	}
+
+	/**
 	 * @param array $roles
 	 * @return $this
 	 */
@@ -87,6 +129,17 @@ class User
 	{
 		$this->password = $password;
 		return $this;
+	}
+
+	public function save()
+	{
+		$repo = new UserRepo();
+		$repo->save(
+			$this->getId(),
+			$this->getUsername(),
+			$this->_getPassword(),
+			$this->getRolesString()
+		);
 	}
 
 	/**

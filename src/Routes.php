@@ -11,6 +11,9 @@ return [
 	['GET', '/page-two', ['Controller\User', 'pageTwo']],
 	['GET', '/page-three', ['Controller\User', 'pageThree']],
 
-	['GET', '/user/{id:\d+}', ['src\Api\User', 'get']],
+	['POST', '/api/user', ['Api\User', 'post']],
+	['DELETE', '/api/user/{id:\d+}', ['Api\User', 'delete']],
+	['PUT', '/api/user/{id:\d+}', ['Api\User', 'put']],
+	['GET', '/api/user/{id:\d+}', ['Api\User', 'get']],
 ];
 
