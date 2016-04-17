@@ -3,7 +3,6 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 return [
-
 	['GET', '/', ['Controller\User', 'init']],
 	['POST', '/login', ['Controller\User', 'login']],
 	['GET', '/logout', ['Controller\User', 'logout']],

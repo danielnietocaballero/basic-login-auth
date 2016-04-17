@@ -2,7 +2,7 @@
 
 namespace Repository;
 
-abstract class Repository extends \SQLite3
+abstract class RepositoryAbstract extends \SQLite3
 {
 	protected $tableName;
 
@@ -77,5 +77,5 @@ EOF;
 		}
 	}
 
-	abstract public function recreate();
+	abstract public function dataMapper();
 }

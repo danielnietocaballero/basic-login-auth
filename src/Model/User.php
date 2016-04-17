@@ -40,6 +40,8 @@ class User
 	}
 
 	/**
+	 * Returns the public information of the User
+	 *
 	 * @return array
 	 */
 	public function toArray()
@@ -52,7 +54,7 @@ class User
 	}
 
 	/**
-	 * @return int|null
+	 * @return int|null Could be null id the Entity is in creating process
 	 */
 	public function getId()
 	{
@@ -131,6 +133,9 @@ class User
 		return $this;
 	}
 
+	/**
+	 * Persist Entity's data in the Repo
+	 */
 	public function save()
 	{
 		$repo = new UserRepo();
@@ -161,5 +166,15 @@ class User
 	{
 		$repo = new UserRepo();
 		return $repo->getByUsername($username);
+	}
+
+	/**
+	 * @param int $id
+	 * @return self|bool
+	 */
+	static public function getById($id)
+	{
+		$repo = new UserRepo();
+		return $repo->getById($id);
 	}
 }

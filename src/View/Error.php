@@ -2,18 +2,18 @@
 
 namespace View;
 
-class Error
+class Error extends View
 {
 	public function __construct()
 	{
+		parent::__construct();
 	}
 
-	public function render($params = array())
+	/**
+	 * @inheritdoc
+	 */
+	public function render($params = array(), $file = 'error/index.php')
 	{
-		//$this->view->params = $params;
-
-		extract($params);
-
-		include __DIR__ . '/../public/html/error/index.php';
+		parent::render($params, $file);
 	}
 }

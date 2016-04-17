@@ -4,7 +4,7 @@
 
 <body>
 
-<form action="/api/user" method="POST">
+<form action="/login" method="POST">
 	<p>
 		<label for="username">Username</label>
 		<input id="username" value="" name="username" type="text" required="required"/><br>

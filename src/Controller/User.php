@@ -4,18 +4,19 @@ namespace Controller;
 
 use Model\User as UserModel;
 use View\User as UserView;
+use helper\Session;
 
-class User extends Generic
+class User
 {
+	/** @var Session */
+	protected $session;
 
 	public function __construct()
 	{
-		parent::__construct();
 	}
 
 	public function init()
 	{
-		parent::init();
 		$view = new UserView();
 		$view->render();
 	}
@@ -30,7 +31,7 @@ class User extends Generic
 			$error->render();
 		}
 
-		$this->_startSession($user);
+		$this->_getSessionHelper()->startSession($user);
 		$this->redirectToView($user);
 	}
 
@@ -39,7 +40,7 @@ class User extends Generic
 	 */
 	public function logout()
 	{
-		$this->_killSession();
+		$this->_getSessionHelper()->killSession();
 	}
 
 	/**
@@ -47,7 +48,7 @@ class User extends Generic
 	 */
 	public function pageOne()
 	{
-		$user = $this->_checkCredentials();
+		$user = $this->_getSessionHelper()->checkCredentials();
 		$this->_loadView($user, UserModel::ROLE_PAGE_1, 'page-one.php');
 	}
 
@@ -56,7 +57,7 @@ class User extends Generic
 	 */
 	public function pageTwo()
 	{
-		$user = $this->_checkCredentials();
+		$user = $this->_getSessionHelper()->checkCredentials();
 		$this->_loadView($user, UserModel::ROLE_PAGE_2, 'page-two.php');
 	}
 
@@ -65,7 +66,7 @@ class User extends Generic
 	 */
 	public function pageThree()
 	{
-		$user = $this->_checkCredentials();
+		$user = $this->_getSessionHelper()->checkCredentials();
 		$this->_loadView($user, UserModel::ROLE_PAGE_3, 'page-three.php');
 	}
 
@@ -100,6 +101,18 @@ class User extends Generic
 	}
 
 	/**
+	 * @param string $uri
+	 */
+	public function redirectTo($uri = '/')
+	{
+		if ($uri != '/') {
+			unset($_SESSION['url']);
+		}
+		header('Location: ' . $uri);
+		exit();
+	}
+
+	/**
 	 * @param UserModel $user
 	 * @param string $rol
 	 * @param string $template
@@ -123,28 +136,16 @@ class User extends Generic
 	 */
 	protected function _loadViewItems(UserModel $user, $template)
 	{
-		if ($this->_isSessionEmpty()) {
+		if ($this->_getSessionHelper()->isSessionEmpty()) {
 			$this->redirectTo();
 		}
-		if (!$this->_isSessionAlive()) {
+		if (!$this->_getSessionHelper()->isSessionAlive()) {
 			$error = new Error(401, 'Your session has expired.');
 			$error->render();
 		}
 
 		$view = new UserView();
 		$view->render(array('user' => $user), $template);
-	}
-
-	/**
-	 * Starts all needed for a session data storage
-	 * @param UserModel $user
-	 */
-	protected function _startSession(UserModel $user)
-	{
-		$_SESSION['username'] = $user->getUsername();
-		$_SESSION['start'] = time(); // Taking now logged in time.
-		// Ending a session in 30 minutes from the starting time.
-		$_SESSION['expire'] = $_SESSION['start'] + (5 * 60);
 	}
 
 	/**
@@ -176,4 +177,16 @@ class User extends Generic
 				break;
 		}
 	}
+
+	/**
+	 * @return Session
+	 */
+	protected function _getSessionHelper()
+	{
+		if ($this->session === null) {
+			$this->session = new Session();
+		}
+		return $this->session;
+	}
+
 }

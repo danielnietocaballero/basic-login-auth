@@ -1,9 +1,10 @@
 <?php
 
 namespace Controller;
+
 use View\Error as ErrorView;
 
-class Error extends Generic
+class Error
 {
 	/** @var string */
 	protected $code;
@@ -12,7 +13,6 @@ class Error extends Generic
 
 	public function __construct($code, $message)
 	{
-		parent::__construct();
 		$this->code = $code;
 		$this->message = $message;
 	}
@@ -34,7 +34,7 @@ class Error extends Generic
 	}
 
 	/**
-	 *
+	 * Render error in the view
 	 */
 	public function render()
 	{

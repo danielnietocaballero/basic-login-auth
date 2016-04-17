@@ -4,7 +4,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 session_start();
 
-$dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
+$dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
 	$routes = include('Routes.php');
 	foreach ($routes as $route) {
 		$r->addRoute($route[0], $route[1], $route[2]);

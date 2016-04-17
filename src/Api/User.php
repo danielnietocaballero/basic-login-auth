@@ -2,27 +2,35 @@
 
 namespace Api;
 
-use Repository\User as UserRepo;
+use Api\Http\Security;
+use Api\Http\Utils;
 
-class User extends Generic
+class User
 {
+	/** @var Utils */
+	protected $http;
+
+	/** @var Security */
+	protected $security;
+
 	/**
 	 * GET verb
+	 *
+	 * Must receive an URL param to identify which resource is accesing to
 	 *
 	 * @param array $params
 	 */
 	public function get($params = array())
 	{
 		if (empty($params['id'])) {
-			$this->_response(array('ID' => 'not provided'), 401);
+			$this->_getHttpUtil()->response(array('ID' => 'not provided'), 401);
 		}
 
-		$repo = new UserRepo();
-		if (null === ($user = $repo->getById($params['id']))) {
-			$this->_response('User not found', 404);
+		if (null === ($user = \Model\User::getById($params['id']))) {
+			$this->_getHttpUtil()->response('User not found', 404);
 		}
 
-		$this->_response($user->toArray(), 200);
+		$this->_getHttpUtil()->response($user->toArray(), 200);
 	}
 
 	/**
@@ -32,20 +40,20 @@ class User extends Generic
 	 */
 	public function delete($params = array())
 	{
-		$this->_genericSecurityCheck($params);
+		$this->_getSecurityUtil()->genericSecurityCheck($params);
 
-		$repo = new UserRepo();
-		if (null === ($user = $repo->getById($params['id']))) {
-			$this->_response('User not found', 404);
+		if (null === ($user = \Model\User::getById($params['id']))) {
+			$this->_getHttpUtil()->response('User not found', 404);
 		}
 
 		try {
+			// NOT IMPLEMENTED
 			$user->delete();
 		} catch (\Exception $e) {
-			$this->_response($e->getMessage(), 500);
+			$this->_getHttpUtil()->response($e->getMessage(), 500);
 		}
 
-		$this->_response('User updated', 200);
+		$this->_getHttpUtil()->response('User updated', 200);
 	}
 
 	/**
@@ -55,11 +63,10 @@ class User extends Generic
 	 */
 	public function put($params = array())
 	{
-		$this->_genericSecurityCheck($params);
+		$this->_getSecurityUtil()->genericSecurityCheck($params);
 
-		$repo = new UserRepo();
-		if (null === ($user = $repo->getById($params['id']))) {
-			$this->_response('User not found', 404);
+		if (null === ($user = \Model\User::getById($params['id']))) {
+			$this->_getHttpUtil()->response('User not found', 404);
 		}
 
 		parse_str(file_get_contents('php://input'), $params);
@@ -79,10 +86,10 @@ class User extends Generic
 		try {
 			$user->save();
 		} catch (\Exception $e) {
-			$this->_response($e->getMessage(), 500);
+			$this->_getHttpUtil()->response($e->getMessage(), 500);
 		}
 
-		$this->_response('User updated', 200);
+		$this->_getHttpUtil()->response('User updated', 200);
 	}
 
 	/**
@@ -92,7 +99,7 @@ class User extends Generic
 	{
 		foreach ($_POST as $field => $value) {
 			if (empty($_POST[$field])) {
-				$this->_response(array($field => 'is empty'), 401);
+				$this->_getHttpUtil()->response(array($field => 'is empty'), 401);
 			}
 		}
 
@@ -100,7 +107,7 @@ class User extends Generic
 			|| empty($_POST['password'])
 			|| empty($_POST['roles'])
 		) {
-			$this->_response($_POST, 401);
+			$this->_getHttpUtil()->response($_POST, 401);
 		}
 
 		$username = $_POST['username'];
@@ -111,39 +118,31 @@ class User extends Generic
 			$user = new \Model\User($username, $password, $roles);
 			$user->save();
 		} catch (\Exception $e) {
-			$this->_response($e->getMessage(), 500);
+			$this->_getHttpUtil()->response($e->getMessage(), 500);
 		}
 
-		$this->_response('User saved', 200);
+		$this->_getHttpUtil()->response('User saved', 200);
 	}
 
 	/**
-	 * @param array $params
+	 * @return Utils
 	 */
-	protected function _genericSecurityCheck($params)
+	protected function _getHttpUtil()
 	{
-		if (empty($params['id'])) {
-			$this->_response(array('ID' => 'not provided'), 401);
+		if ($this->http === null) {
+			$this->http = new Utils();
 		}
+		return $this->http;
+	}
 
-		/**
-		 * Check authentication
-		 */
-		if (empty($_SERVER['HTTP_USERNAME'])) {
-			$this->_response(array('Username' => 'is empty'), 401);
+	/**
+	 * @return Security
+	 */
+	protected function _getSecurityUtil()
+	{
+		if ($this->security === null) {
+			$this->security = new Security();
 		}
-
-		if (empty($_SERVER['HTTP_PASSWORD'])) {
-			$this->_response(array('Password' => 'is empty'), 401);
-		}
-
-		$username = $_SERVER['HTTP_USERNAME'];
-		$password = $_SERVER['HTTP_PASSWORD'];
-
-		$userAdmin = \Model\User::getByUsernameAndPassword($username, $password);
-
-		if (null === $userAdmin || !in_array(\Model\User::ROLE_ADMIN, $userAdmin->getRoles())) {
-			$this->_response(array('message' => 'Action not allowed'), 405);
-		}
+		return $this->security;
 	}
 }

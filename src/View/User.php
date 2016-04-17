@@ -2,19 +2,18 @@
 
 namespace View;
 
-class User
+class User extends View
 {
 	public function __construct()
 	{
+		parent::__construct();
 	}
 
 	/**
-	 * @param array $params
-	 * @param string|null $file
+	 * @inheritdoc
 	 */
 	public function render($params = array(), $file = 'user/index.php')
 	{
-		extract($params);
-		include __DIR__ . '/../public/html/' . $file;
+		parent::render($params, $file);
 	}
 }

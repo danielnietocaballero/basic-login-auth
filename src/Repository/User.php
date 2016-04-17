@@ -4,18 +4,13 @@ namespace Repository;
 
 use Model\User as UserModel;
 
-class User extends Repository
+class User extends RepositoryAbstract
 {
 	protected $tableName = 'Users';
 
 	public function __construct()
 	{
 		parent::__construct();
-	}
-
-	public static function getUsers()
-	{
-		return array();
 	}
 
 	/**
@@ -30,7 +25,7 @@ class User extends Repository
 			'password' => $password
 		));
 
-		return !$result ? null : $this->recreate($result);
+		return !$result ? null : $this->dataMapper($result);
 	}
 
 	/**
@@ -43,7 +38,7 @@ class User extends Repository
 			'username' => $username
 		));
 
-		return !$result ? null : $this->recreate($result);
+		return !$result ? null : $this->dataMapper($result);
 	}
 
 	/**
@@ -56,7 +51,7 @@ class User extends Repository
 			'id' => $id
 		));
 
-		return !$result ? null : $this->recreate($result);
+		return !$result ? null : $this->dataMapper($result);
 	}
 
 	public function save($id = null, $userame, $password, $roles)
@@ -83,7 +78,7 @@ class User extends Repository
 	 * @param array $data
 	 * @return UserModel|null
 	 */
-	public function recreate($data = array())
+	public function dataMapper($data = array())
 	{
 		if (empty($data)) {
 			return null;

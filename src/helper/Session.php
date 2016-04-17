@@ -1,10 +1,10 @@
 <?php
 
-namespace Controller;
+namespace helper;
 
 use Model\User as UserModel;
 
-class Generic
+class Session
 {
 	public function __construct()
 	{
@@ -29,7 +29,7 @@ class Generic
 	/**
 	 * Ends user session
 	 */
-	protected function _killSession()
+	public function killSession()
 	{
 		session_destroy();
 		header('Location: /');
@@ -39,7 +39,7 @@ class Generic
 	/**
 	 * @return bool
 	 */
-	protected function _isSessionEmpty()
+	public function isSessionEmpty()
 	{
 		return empty($_SESSION);
 	}
@@ -47,14 +47,14 @@ class Generic
 	/**
 	 * @return bool
 	 */
-	protected function _isSessionAlive()
+	public function isSessionAlive()
 	{
 		if (!isset($_SESSION['username'])) {
 			return false;
 		}
 		$now = time();
 		if ($now > $_SESSION['expire']) {
-			$this->_killSession();
+			$this->killSession();
 			return false;
 		}
 		$this->_increaseSession();
@@ -84,7 +84,7 @@ class Generic
 	 * If any user is logged, redirect to Login
 	 * @return UserModel
 	 */
-	protected function _checkCredentials()
+	public function checkCredentials()
 	{
 		$user = $this->_getLoggedUser();
 		if (null === $user) {
@@ -93,4 +93,17 @@ class Generic
 		}
 		return $user;
 	}
+
+	/**
+	 * Starts all needed for a session data storage
+	 * @param UserModel $user
+	 */
+	public function startSession(UserModel $user)
+	{
+		$_SESSION['username'] = $user->getUsername();
+		$_SESSION['start'] = time(); // Taking now logged in time.
+		// Ending a session in 30 minutes from the starting time.
+		$_SESSION['expire'] = $_SESSION['start'] + (5 * 60);
+	}
+
 }
