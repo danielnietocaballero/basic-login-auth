@@ -1,5 +1,6 @@
 **First of all, you have to run in console (from project root folder):**
-*php db_up.php*
+`composer install`
+`php db_up.php`
 
 It will create in memory a database and a table Users with some pre-filled data. In example:
 
@@ -13,7 +14,7 @@ It will create in memory a database and a table Users with some pre-filled data.
 
 
 Then, you have tu run a PHP instance with the built-in server:
-*php -S localhost:8000*
+`php -S localhost:8000`
 
 It will launch a php server. Then, you could go to the browser, and go to http://localhost:8000/
 
@@ -21,4 +22,14 @@ A login form will be shown.
 
 The ADMIN user, will be redirected to PAGE_1
 
+Also you can test the API REST using any browser client, in example: 
+https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo/related
+
+For making a correct request, each verb has a description before its method body.
+
+Basic authentication in the API REST is waiting for user and password in the headers.
+If a resource ID is given (GET, PUT, DELETE) must be given as a URL param, 
+and other information (PUT or POST), as part of the request body.
+
 **For running tests:**
+*pending*
