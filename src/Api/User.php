@@ -35,6 +35,8 @@ class User
 
 	/**
 	 * DELETE verb
+	 * 
+	 * It will receive Item ID by URL paarmeter and authentication as a request HEADER
 	 *
 	 * @param array $params
 	 */
@@ -47,7 +49,6 @@ class User
 		}
 
 		try {
-			// NOT IMPLEMENTED
 			$user->delete();
 		} catch (\Exception $e) {
 			$this->_getHttpUtil()->response($e->getMessage(), 500);
@@ -59,6 +60,9 @@ class User
 	/**
 	 * PUT verb
 	 *
+	 * As a URL param, it will receive the ID, but the other params, as part of
+	 * the request body. Authentication credentials in the headers
+	 * 
 	 * @param array $params
 	 */
 	public function put($params = array())

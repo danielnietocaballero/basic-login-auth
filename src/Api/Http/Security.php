@@ -2,7 +2,6 @@
 
 namespace Api\Http;
 
-use Api\Utils;
 use \Model\User as UserModel;
 
 class Security
@@ -12,7 +11,6 @@ class Security
 
 	public function __construct()
 	{
-
 	}
 
 	/**

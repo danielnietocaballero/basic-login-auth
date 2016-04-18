@@ -54,7 +54,16 @@ class User extends RepositoryAbstract
 		return !$result ? null : $this->dataMapper($result);
 	}
 
-	public function save($id = null, $userame, $password, $roles)
+	/**
+	 * Performs a save operation in the repository
+	 *
+	 * @param int|null $id
+	 * @param string $userame
+	 * @param string $password
+	 * @param array $roles
+	 * @throws \Exception
+	 */
+	public function save($id = null, $userame, $password, array $roles)
 	{
 		if (null === $id) {
 			$this->insert(array(
