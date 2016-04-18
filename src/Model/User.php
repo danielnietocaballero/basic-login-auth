@@ -25,10 +25,10 @@ class User
 
 	public function __construct($id = null, $username, $password, $roles = array())
 	{
-		$this->setId($id)
-			->setUsername($username)
-			->setPassword($password)
-			->setRoles($roles);
+		$this->id = $id;
+		$this->username = $username;
+		$this->password = $password;
+		$this->roles = $roles;
 	}
 
 	/**
