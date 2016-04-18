@@ -75,6 +75,16 @@ class User extends RepositoryAbstract
 	}
 
 	/**
+	 * Performs a delete operation in the repository
+	 * 
+	 * @param int $id
+	 */
+	public function delete($id)
+	{
+		$this->delete($id);
+	}
+
+	/**
 	 * @param array $data
 	 * @return UserModel|null
 	 */

@@ -77,5 +77,22 @@ EOF;
 		}
 	}
 
+	public function delete($id)
+	{
+		$sql = <<<EOF
+      DELETE FROM $this->tableName WHERE id = '$id' 
+EOF;
+
+		try {
+			$ret = $this->query($sql);
+		} catch (\Exception $e) {
+			throw new \Exception($e->getMessage());
+		}
+
+		if (!$ret) {
+			throw new \Exception('Cannot delete items');
+		}
+	}
+
 	abstract public function dataMapper();
 }

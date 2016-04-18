@@ -148,6 +148,15 @@ class User
 	}
 
 	/**
+	 * Delete entity
+	 */
+	public function delete()
+	{
+		$repo = new UserRepo();
+		$repo->delete($this->getId());
+	}
+
+	/**
 	 * @param string $username
 	 * @param string $password
 	 * @return self|bool
