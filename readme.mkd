@@ -14,6 +14,8 @@ It will create in memory a database and a table Users with some pre-filled data.
 |'god'       |   'god'       |   'ADMIN'|
 |'multirol'  |   'multirol'  |   'PAGE_1\|PAGE_2'|
 
+In every execution of this script, the DB will be dropped and re-created.
+
 
 Then, you have tu run a PHP instance with the built-in server:
 
@@ -35,4 +37,16 @@ If a resource ID is given (GET, PUT, DELETE) must be given as a URL param,
 and other information (PUT or POST), as part of the request body.
 
 **For running tests:**
-*pending*
+From the project root, you have to (from console):
+`{phpunitpath} src/tests/*`
+
+Note that {phpunitpath} must be your path the PHPUnit executable, in my case, 
+I could use the one in my vendors:
+`./vendor/bin/phpunit src/tests/*`
+
+This operation will launch all tests, that are included in that folder. There are tests for:
+
+* Model (User). Testing model, Repository classes are tested because Model's tests
+have been created for testing the model logic + data access.
+
+* Api (User). _In progress_

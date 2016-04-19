@@ -69,7 +69,7 @@ class User extends RepositoryAbstract
 			$this->insert(array(
 				'username' => $userame,
 				'password' => $password,
-				'roles' => $roles,
+				'roles' => implode('|', $roles),
 			));
 		} else {
 			$this->update(
@@ -77,7 +77,7 @@ class User extends RepositoryAbstract
 				array(
 					'username' => $userame,
 					'password' => $password,
-					'roles' => $roles,
+					'roles' => implode('|', $roles),
 				)
 			);
 		}
@@ -85,7 +85,7 @@ class User extends RepositoryAbstract
 
 	/**
 	 * Performs a delete operation in the repository
-	 * 
+	 *
 	 * @param int $id
 	 */
 	public function delete($id)

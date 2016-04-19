@@ -17,6 +17,7 @@ if (!$db) {
 }
 
 $sql = <<<EOF
+DROP TABLE Users;
       CREATE TABLE Users
       (id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT NOT NULL,
